@@ -1,0 +1,8 @@
+controllers\EntryController.class
+repos\EntryRepo.class
+util\JDBCConnection.class
+servlets\primaryServlet.class
+services\EntryService.class
+servlets\RouterMaybe.class
+models\Entry.class
+repos\EntryImplementation.class
