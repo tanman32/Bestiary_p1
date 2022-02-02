@@ -2,7 +2,10 @@ controllers\EntryController.class
 repos\EntryRepo.class
 util\JDBCConnection.class
 servlets\primaryServlet.class
+models\Ability.class
+models\Attack.class
 services\EntryService.class
 servlets\RouterMaybe.class
+services\EntryImplementationService.class
 models\Entry.class
 repos\EntryImplementation.class

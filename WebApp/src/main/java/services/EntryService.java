@@ -2,6 +2,7 @@ package services;
 
 import models.Entry;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public interface EntryService {
@@ -9,7 +10,7 @@ public interface EntryService {
     //You may opt for having some Trivial Service Methods:
     public Entry addEntry(Entry e);
     public Entry getEntry(int id);
-    public List<Entry> getAllEntries();
+    public LinkedList<Entry> getAllEntries();
     public Entry updateEntry(Entry change);
     public Entry deleteEntry(int id); //throws ResourceNotFoundException;
 

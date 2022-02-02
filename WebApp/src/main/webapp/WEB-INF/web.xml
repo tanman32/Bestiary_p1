@@ -7,12 +7,11 @@
   <servlet>
     <servlet-name>PrimeServlet</servlet-name>
     <servlet-class>servlets.primaryServlet</servlet-class>
-
   </servlet>
 
   <servlet-mapping>
     <servlet-name>PrimeServlet</servlet-name>
-    <url-pattern>/PrimeServlet</url-pattern>
+    <url-pattern>/*</url-pattern>
   </servlet-mapping>
 
 </web-app>

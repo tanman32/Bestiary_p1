@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class EntryController {
@@ -31,20 +32,20 @@ public class EntryController {
             return;
         }
 
-        Entry m = ms.getEntry(id);
+        Entry e = ms.getEntry(id);
 
-        response.getWriter().append((m != null) ? gson.toJson(m): "{}");
+        response.getWriter().append((e != null) ? gson.toJson(e): "{}");
     }
 
     public void getEntries(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        List<EntryService> movieList = new ArrayList<>();
+        LinkedList<Entry> Bestiary = new LinkedList<Entry>();
         String price = request.getParameter("price");
 
         //if the price is null, then that Query Parameter was not provided, so we will do a normal
         //getAllMovies
         if(price == null) {
-           // movieList = ms.getAllMovies();
+            Bestiary = ms.getAllEntries();
         } else {
             try {
                 Double priceNum = Double.parseDouble(price);
@@ -54,7 +55,7 @@ public class EntryController {
             }
         }
 
-        response.getWriter().append(gson.toJson(movieList));
+        response.getWriter().append(gson.toJson(Bestiary));
 
     }
 
