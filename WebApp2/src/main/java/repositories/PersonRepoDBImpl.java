@@ -1,5 +1,6 @@
 package repositories;
 
+import models.Dog;
 import models.Person;
 import util.JDBCConnection;
 import util.ResourceNotFoundException;
@@ -10,6 +11,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static Application.App.*;
+
 public class PersonRepoDBImpl implements PersonRepo{
 
         Connection conn = JDBCConnection.getConnection();
@@ -17,73 +20,51 @@ public class PersonRepoDBImpl implements PersonRepo{
         @Override
         public Person addPerson(Person m) {
 
-            String sql = "INSERT INTO person VALUES (default,?,?,?,?,?) RETURNING *";
+            Person perp = null;
 
             try {
-                PreparedStatement ps = conn.prepareStatement(sql);
-
-                //set values for all the placeholders: ?
-                ps.setString(1, m.getName());
-                ps.setString(2, m.getAge());
-                ps.setString(3,m.getHeight());
-                ps.setString(4, m.getBuild());
-                ps.setString(5, m.getTalent());
-
-                ResultSet rs = ps.executeQuery();
-
-                if(rs.next()) {
-                    return buildPerson(rs);
-                }
-            } catch (SQLException e) {
+                perp = (Person) processPost(m, conn);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            return null;
+
+            return perp;
         }
 
         @Override
         public Person getPerson(int id) {
 
             //Make a String for the SQL statement you want executed. Use Placeholders for data values.
-            String sql = "SELECT * FROM person WHERE p_id = ?";
+            Person perp = new Person();
+            perp.setId(id);
 
             try {
-                //Set up PreparedStatement
-                PreparedStatement ps = conn.prepareStatement(sql);
-                //Set values for any Placeholders
-                ps.setInt(1, id);
-
-                //Execute the query, store the results -> ResultSet
-                ResultSet rs = ps.executeQuery();
-
-                //Extract results our of ResultSet
-                if(rs.next()) {
-                    return buildPerson(rs);
-                }
-            } catch (SQLException e) {
+                Person p2 = (Person) (processGetbyID(perp, conn));
+                //System.out.println(p2);
+                return p2;
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+
             return null;
         }
 
         @Override
         public List<Person> getAllPersons() {
 
-            String sql = "SELECT * FROM person";
+            // dogs = new ArrayList<>();
+            Person p1 = new Person();
+            List<Person> peeps = new ArrayList<>();
+
 
             try {
-                PreparedStatement ps = conn.prepareStatement(sql);
 
-                ResultSet rs = ps.executeQuery();
+                for (Object animal : processGetAll(p1, conn)){
 
-                //Extract all movies out of the ResultSet
-                List<Person> persons = new ArrayList<>();
-                while(rs.next()) {
-                    //Add each movie to our list of movies.
-                    persons.add(buildPerson(rs));
+                    peeps.add((Person)animal);
                 }
-                return persons;
-
-            } catch (SQLException e) {
+                return peeps;
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -93,51 +74,30 @@ public class PersonRepoDBImpl implements PersonRepo{
         @Override
         public Person updatePerson(Person change) {
 
-            String sql = "UPDATE person set name=?, age=?, height=?, build=? talent=? WHERE p_id = ? RETURNING *";
+            Person p1 = null;
 
             try {
-                PreparedStatement ps = conn.prepareStatement(sql);
-
-                ps.setString(1, change.getName());
-                ps.setString(2, change.getAge());
-                ps.setString(3, change.getHeight());
-                ps.setString(4, change.getBuild());
-                ps.setString(5, change.getTalent());
-                ps.setInt(6, change.getId());
-
-                ResultSet rs = ps.executeQuery();
-
-                if(rs.next()) {
-                    return buildPerson(rs);
-                }
-
-            } catch (SQLException e) {
+                p1 = (Person) processPut(change, conn);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            return null;
+            return p1;
         }
 
         @Override
-        public Person deletePerson(int id) throws ResourceNotFoundException {
+        public void deletePerson(int id) throws ResourceNotFoundException {
 
-            String sql = "DELETE FROM person WHERE p_id = ? RETURNING *";
+            Person p1 = new Person();
+            p1.setId(id);
 
             try {
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ps.setInt(1, id);
-
-                ResultSet rs = ps.executeQuery();
-
-                if(rs.next()) {
-                    return buildPerson(rs);
-                } else {
-                    throw new ResourceNotFoundException("Resource with id: " + id + " was not found in database.");
-                }
-            } catch (SQLException e) {
+                deleteGetbyID(p1, conn);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            return null;
+
+            return;
         }
 
         //Helper Method

@@ -21,5 +21,5 @@ public interface DogService {
     public Dog getDog(int id);
     public List<Dog> getAllDogs();
     public Dog updateDog(Dog change);
-    public Dog deleteDog(int id) throws ResourceNotFoundException;
+    public void deleteDog(int id) throws ResourceNotFoundException;
 }

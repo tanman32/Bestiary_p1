@@ -1,25 +1,29 @@
 package models;
 
-
 //Model is designed to represent Data that we want to maintain within our application.
 import annotations.Column;
 import annotations.Table;
 
-@Table(name = "dogs")
+@Table(name = "dog")
 public class Dog {
 
     @Column(name = "d_id", primaryKey = true)
     private int id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "age")
     private String age;
+
     @Column(name = "breed")
     private String breed;
+
     @Column(name = "personality")
     private String personality;
     @Column(name = "furcolor")
     private String furcolor;
+
 
 
     //No-Arg Constructor

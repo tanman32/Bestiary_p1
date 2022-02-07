@@ -11,5 +11,5 @@ public interface PersonService {
     public Person getPerson(int id);
     public List<Person> getAllPersons();
     public Person updatePerson(Person change);
-    public Person deletePerson(int id) throws ResourceNotFoundException;
+    public void deletePerson(int id) throws ResourceNotFoundException;
 }

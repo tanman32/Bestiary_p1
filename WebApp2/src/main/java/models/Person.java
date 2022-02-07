@@ -1,20 +1,26 @@
 package models;
+
 import annotations.Column;
 import annotations.Table;
 
-@Table(name = "person")
+@Table(name = "dog")
 public class Person {
 
-    @Column(name = "p_id", primaryKey = true)
+    @Column(name = "id", primaryKey = true)
     private int id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "age")
     private String age;
+
     @Column(name = "height")
     private String height;
+
     @Column(name = "build")
     private String build;
+
     @Column(name = "talent")
     private String talent;
 

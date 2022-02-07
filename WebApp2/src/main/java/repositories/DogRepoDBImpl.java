@@ -10,6 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static Application.App.*;
 
 public class DogRepoDBImpl implements DogRepo {
 
@@ -18,73 +21,50 @@ public class DogRepoDBImpl implements DogRepo {
     @Override
     public Dog addDog(Dog m) {
 
-        String sql = "INSERT INTO dog VALUES (default,?,?,?,?,?) RETURNING *";
+        Dog dog = null;
 
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-
-            //set values for all the placeholders: ?
-            ps.setString(1, m.getName());
-            ps.setString(2, m.getAge());
-            ps.setString(3,m.getBreed());
-            ps.setString(4, m.getPersonality());
-            ps.setString(5, m.getFurcolor());
-
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next()) {
-                return buildDog(rs);
-            }
-        } catch (SQLException e) {
+            dog = (Dog) processPost(m, conn);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+
+        return dog;
     }
 
     @Override
     public Dog getDog(int id) {
 
-        //Make a String for the SQL statement you want executed. Use Placeholders for data values.
-        String sql = "SELECT * FROM dog WHERE d_id = ?";
+        Dog dog = new Dog();
+        dog.setId(id);
 
         try {
-            //Set up PreparedStatement
-            PreparedStatement ps = conn.prepareStatement(sql);
-            //Set values for any Placeholders
-            ps.setInt(1, id);
-
-            //Execute the query, store the results -> ResultSet
-            ResultSet rs = ps.executeQuery();
-
-            //Extract results our of ResultSet
-            if(rs.next()) {
-                return buildDog(rs);
-            }
-        } catch (SQLException e) {
+            Dog dog2 = Dog.class.cast(processGetbyID(dog, conn));
+            System.out.println(dog2);
+            return dog2;
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
     @Override
     public List<Dog> getAllDogs() {
 
-        String sql = "SELECT * FROM dog";
+        // dogs = new ArrayList<>();
+        Dog dog = new Dog();
+        List<Dog> doggies = new ArrayList<>();
+
 
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
 
-            ResultSet rs = ps.executeQuery();
+            for (Object animal : processGetAll(dog, conn)){
 
-            //Extract all movies out of the ResultSet
-            List<Dog> dogs = new ArrayList<>();
-            while(rs.next()) {
-                //Add each movie to our list of movies.
-                dogs.add(buildDog(rs));
+                doggies.add((Dog)animal);
             }
-            return dogs;
-
-        } catch (SQLException e) {
+            return doggies;
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -94,51 +74,30 @@ public class DogRepoDBImpl implements DogRepo {
     @Override
     public Dog updateDog(Dog change) {
 
-        String sql = "UPDATE dog set name=?, age=?, breed=?, personality=? furcolor=? WHERE d_id = ? RETURNING *";
+        Dog dog = null;
 
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-
-            ps.setString(1, change.getName());
-            ps.setString(2, change.getAge());
-            ps.setString(3, change.getBreed());
-            ps.setString(4, change.getPersonality());
-            ps.setString(4, change.getFurcolor());
-            ps.setInt(5, change.getId());
-
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next()) {
-                return buildDog(rs);
-            }
-
-        } catch (SQLException e) {
+            dog = (Dog) processPut(change, conn);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
+        return dog;
     }
 
     @Override
-    public Dog deleteDog(int id) throws ResourceNotFoundException {
+    public void deleteDog(int id) throws ResourceNotFoundException {
 
-        String sql = "DELETE FROM dog WHERE d_id = ? RETURNING *";
+        Dog dog = new Dog();
+        dog.setId(id);
 
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, id);
-
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next()) {
-                return buildDog(rs);
-            } else {
-                throw new ResourceNotFoundException("Resource with id: " + id + " was not found in database.");
-            }
-        } catch (SQLException e) {
+             deleteGetbyID(dog, conn);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+
+        return;
     }
 
     //Helper Method

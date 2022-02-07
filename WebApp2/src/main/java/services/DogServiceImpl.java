@@ -37,8 +37,9 @@ public class DogServiceImpl implements DogService {
     }
 
     @Override
-    public Dog deleteDog(int id) throws ResourceNotFoundException {
-        return mr.deleteDog(id);
+    public void deleteDog(int id) throws ResourceNotFoundException {
+         mr.deleteDog(id);
+         return;
     }
 
 }

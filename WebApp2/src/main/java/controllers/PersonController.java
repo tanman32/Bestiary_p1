@@ -76,7 +76,7 @@ public class PersonController {
 
         int id = (int) request.getAttribute("id");
 
-        Person m = ms.deletePerson(id);
+        ms.deletePerson(id);
 
 //        response.getWriter().append((m != null) ? gson.toJson(m) : "{}");
         response.setStatus(204);

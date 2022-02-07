@@ -39,8 +39,8 @@ public class PersonServiceImpl implements PersonService{
         }
 
         @Override
-        public Person deletePerson(int id) throws ResourceNotFoundException {
-            return mr.deletePerson(id);
+        public void deletePerson(int id) throws ResourceNotFoundException {
+             mr.deletePerson(id);
         }
 
     }

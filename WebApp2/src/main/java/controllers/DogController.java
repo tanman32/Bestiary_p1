@@ -42,7 +42,6 @@ public class DogController {
 
     }
 
-
     public void addDog(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         //Extract data/information from the request
@@ -68,6 +67,7 @@ public class DogController {
         Dog m = gson.fromJson(request.getReader(), Dog.class);
         m.setId((int) request.getAttribute("id"));
 
+
         m = ms.updateDog(m);
 
         response.getWriter().append((m != null) ? gson.toJson(m) : "{}");
@@ -77,7 +77,7 @@ public class DogController {
 
         int id = (int) request.getAttribute("id");
 
-        Dog m = ms.deleteDog(id);
+        ms.deleteDog(id);
 
 //        response.getWriter().append((m != null) ? gson.toJson(m) : "{}");
         response.setStatus(204);
